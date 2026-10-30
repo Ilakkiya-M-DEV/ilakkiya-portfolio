@@ -1,338 +1,347 @@
 import { motion, useReducedMotion } from "framer-motion";
 import {
-  ArrowDownRight,
   ArrowRight,
   BarChart3,
-  Brain,
-  Boxes,
-  Code2,
-  Cpu,
   GitBranch,
-  Layers,
   Monitor,
-  Network,
-  Sparkles,
-  TrendingUp,
+  Shield,
   Workflow,
+  Github,
+  Sparkles,
+  Eye,
+  Palette,
+  Link2,
+  ShieldCheck,
 } from "lucide-react";
-import SectionReveal from "./SectionReveal";
+import hubImage from "@/assets/herosection/6f7e2a16-b574-40ad-9a6d-7d9305bb1163.png";
 
+/* ─── Project data (badges & tags removed as requested) ───────────── */
 const projects = [
   {
+    id: "p1",
     icon: BarChart3,
-    category: "Analytics",
     title: "Data Analytics Dashboard System",
     summary:
-      "Interactive dashboards for operational and financial data, with dynamic filters, time-based analysis, and reusable visualizations.",
-    impact: "Turning data into decisions",
-    tags: ["React", "TypeScript", "ECharts"],
-    tone: "violet",
+      "Built interactive dashboards for operational and financial data with dynamic filtering, time-based analysis, and reusable visualization components.",
+    iconBg: "bg-gradient-to-br from-violet-500 to-indigo-600",
   },
   {
+    id: "p2",
     icon: Workflow,
-    category: "AI workflows",
     title: "AI-Assisted Workflow System",
     summary:
-      "AI-assisted workflows that bring intelligent automation into analysis and day-to-day product experiences.",
-    impact: "Smarter workflows with AI",
-    tags: ["React", "AI Integration", "APIs"],
-    tone: "pink",
+      "Integrated AI workflows to automate analysis, provide predictive insights, and improve operational efficiency.",
+    iconBg: "bg-gradient-to-br from-fuchsia-500 to-pink-600",
   },
   {
-    icon: GitBranch,
-    category: "Data visualization",
-    title: "Hierarchical Data Visualization",
-    summary:
-      "Expandable, interactive tree visualizations that make complex structures easier to explore and understand.",
-    impact: "Complex data in simple views",
-    tags: ["ECharts", "Data Viz", "Performance"],
-    tone: "blue",
-  },
-  {
+    id: "p3",
     icon: Monitor,
-    category: "Monitoring",
     title: "Monitoring & Governance Platform",
     summary:
-      "A centralized platform for monitoring workflows, compliance, and system-level insights with real-time updates.",
-    impact: "Real-time visibility at scale",
-    tags: ["React", "TypeScript", "System Design"],
-    tone: "orange",
+      "Developed a centralized platform to monitor workflows, compliance, and system-level insights with real-time updates.",
+    iconBg: "bg-gradient-to-br from-orange-500 to-red-500",
   },
   {
-    icon: Layers,
-    category: "Design systems",
-    title: "Reusable Component System",
+    id: "p4",
+    icon: Shield,
+    title: "Security & Compliance Insights",
     summary:
-      "Shared UI components and logic designed to improve consistency, maintainability, and delivery across products.",
-    impact: "Reusable foundations for teams",
-    tags: ["React", "TypeScript", "Architecture"],
-    tone: "cyan",
+      "Built dashboards to track vulnerabilities, code quality, and compliance metrics across systems.",
+    iconBg: "bg-gradient-to-br from-emerald-500 to-teal-600",
   },
   {
-    icon: TrendingUp,
-    category: "Engineering insights",
-    title: "Engineering Metrics & Insights",
+    id: "p5",
+    icon: GitBranch,
+    title: "Hierarchical Data Visualization",
     summary:
-      "Dashboards that bring workflow efficiency, quality indicators, and delivery trends into view.",
-    impact: "Better planning through insights",
-    tags: ["React", "ECharts", "Analytics"],
-    tone: "blue",
+      "Designed hierarchical and drilldown visualizations for better data exploration and faster decision-making.",
+    iconBg: "bg-gradient-to-br from-blue-500 to-indigo-500",
   },
   {
-    icon: Cpu,
-    category: "Product interfaces",
-    title: "Service-Based Product Interfaces",
+    id: "p6",
+    icon: Github,
+    title: "Developer Intelligence Platform",
     summary:
-      "Modular, API-driven frontend architecture that adapts to multiple services, use cases, and configurations.",
-    impact: "Flexible interfaces that scale",
-    tags: ["React", "TypeScript", "API Integration"],
-    tone: "violet",
-  },
-  {
-    icon: Brain,
-    category: "AI integration",
-    title: "AI-Driven Module Integrations",
-    summary:
-      "AI-assisted modules integrated into frontend workflows to support smarter data processing and decisions.",
-    impact: "Intelligence in everyday tools",
-    tags: ["React", "AI / MCP", "Context-aware UI"],
-    tone: "green",
+      "Built a developer intelligence dashboard using GitHub APIs to explore profiles, repositories, and contributions.",
+    iconBg: "bg-gradient-to-br from-slate-600 to-slate-800",
   },
 ];
 
-const toneStyles = {
-  violet: {
-    border: "border-violet-200/80 hover:border-violet-300",
-    icon: "bg-violet-100 text-violet-700",
-    badge: "bg-violet-50 text-violet-700",
-    tag: "bg-violet-50 text-violet-700",
-    line: "#8b5cf6",
+/* ─── Center connection particles (white capsules with colored icons) ── */
+const connectionParticles = [
+  {
+    label: "AI",
+    x: "43%",
+    y: "35%",
+    icon: Sparkles,
+    circleBg: "bg-gradient-to-tr from-fuchsia-600 to-purple-500",
+    shadow: "shadow-fuchsia-500/20",
   },
-  pink: {
-    border: "border-fuchsia-200/80 hover:border-fuchsia-300",
-    icon: "bg-fuchsia-100 text-fuchsia-700",
-    badge: "bg-fuchsia-50 text-fuchsia-700",
-    tag: "bg-fuchsia-50 text-fuchsia-700",
-    line: "#d946ef",
+  {
+    label: "Analytics",
+    x: "54%",
+    y: "35%",
+    icon: BarChart3,
+    circleBg: "bg-gradient-to-tr from-blue-600 to-indigo-600",
+    shadow: "shadow-blue-500/20",
   },
-  blue: {
-    border: "border-blue-200/80 hover:border-blue-300",
-    icon: "bg-blue-100 text-blue-700",
-    badge: "bg-blue-50 text-blue-700",
-    tag: "bg-blue-50 text-blue-700",
-    line: "#3b82f6",
+  {
+    label: "Observability",
+    x: "64%",
+    y: "39%",
+    icon: Eye,
+    circleBg: "bg-gradient-to-tr from-amber-500 to-orange-500",
+    shadow: "shadow-orange-500/20",
   },
-  orange: {
-    border: "border-orange-200/80 hover:border-orange-300",
-    icon: "bg-orange-100 text-orange-700",
-    badge: "bg-orange-50 text-orange-700",
-    tag: "bg-orange-50 text-orange-700",
-    line: "#f97316",
+  {
+    label: "Security",
+    x: "63%",
+    y: "59%",
+    icon: ShieldCheck,
+    circleBg: "bg-gradient-to-tr from-emerald-500 to-teal-600",
+    shadow: "shadow-emerald-500/20",
   },
-  cyan: {
-    border: "border-cyan-200/80 hover:border-cyan-300",
-    icon: "bg-cyan-100 text-cyan-700",
-    badge: "bg-cyan-50 text-cyan-700",
-    tag: "bg-cyan-50 text-cyan-700",
-    line: "#06b6d4",
+  {
+    label: "UI/UX",
+    x: "41%",
+    y: "61%",
+    icon: Palette,
+    circleBg: "bg-gradient-to-tr from-orange-500 to-amber-500",
+    shadow: "shadow-amber-500/20",
   },
-  green: {
-    border: "border-emerald-200/80 hover:border-emerald-300",
-    icon: "bg-emerald-100 text-emerald-700",
-    badge: "bg-emerald-50 text-emerald-700",
-    tag: "bg-emerald-50 text-emerald-700",
-    line: "#10b981",
+  {
+    label: "Integration",
+    x: "53%",
+    y: "77%",
+    icon: Link2,
+    circleBg: "bg-gradient-to-tr from-blue-500 to-cyan-600",
+    shadow: "shadow-blue-500/20",
   },
-} as const;
-
-const connectorPaths = [
-  "M600 450 C520 380 410 280 200 150",
-  "M600 450 C600 350 600 260 600 150",
-  "M600 450 C680 380 790 280 1000 150",
-  "M600 450 C470 450 350 450 200 450",
-  "M600 450 C730 450 850 450 1000 450",
-  "M600 450 C470 520 350 650 200 750",
-  "M600 450 C600 560 600 650 600 750",
-  "M600 450 C730 520 850 650 1000 750",
 ];
 
-const projectGridPositions = [
-  "lg:col-start-1 lg:row-start-1",
-  "lg:col-start-2 lg:row-start-1",
-  "lg:col-start-3 lg:row-start-1",
-  "lg:col-start-1 lg:row-start-2",
-  "lg:col-start-3 lg:row-start-2",
-  "lg:col-start-1 lg:row-start-3",
-  "lg:col-start-2 lg:row-start-3",
-  "lg:col-start-3 lg:row-start-3",
+/* ─── Card positions touching the 3D model tentacle ends ──────────── */
+const cardPositions = [
+  "top-[2%]    left-[41%]  w-[21%]",  // p1: Analytics (above top blue pad)
+  "top-[39%]   left-[11%]  w-[20%]",  // p2: AI (touches magenta brain pad)
+  "top-[6%]    left-[70%]  w-[21%]",  // p3: Monitoring (touches orange pad)
+  "top-[41%]   left-[73%]  w-[21%]",  // p4: Security (touches green pad)
+  "top-[71%]   left-[11%]  w-[20%]",  // p5: Hierarchical (touches blue pad)
+  "top-[72%]   left-[67%]  w-[21%]",  // p6: Dev Intelligence (touches purple pad)
 ];
 
-const ProjectHub = () => (
-  <div className="relative hidden min-h-[260px] flex-col items-center justify-center lg:col-start-2 lg:row-start-2 lg:flex">
-    <div className="absolute h-48 w-48 rounded-full border border-violet-300/50" />
-    <div className="absolute h-36 w-36 rounded-full border border-dashed border-blue-300/70" />
-    <div className="absolute h-28 w-28 rounded-full bg-gradient-to-br from-violet-300/35 to-blue-300/35 blur-2xl" />
-    <div className="relative flex h-24 w-24 items-center justify-center rounded-[1.7rem] border border-white/90 bg-gradient-to-br from-slate-900 via-indigo-950 to-violet-800 shadow-[0_16px_36px_rgba(91,33,182,0.3)]">
-      <div className="absolute inset-1 rounded-[1.4rem] border border-white/15" />
-      <span className="relative text-2xl font-black tracking-tight text-white">
-        IM<span className="text-fuchsia-300">♥</span>
-      </span>
-      <span className="absolute -bottom-1.5 left-1/2 h-3 w-14 -translate-x-1/2 rounded-full bg-violet-500/50 blur-md" />
-    </div>
-    <span className="relative mt-5 inline-flex items-center gap-1.5 rounded-full border border-white bg-white/90 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.16em] text-slate-600 shadow-sm">
-      <Network className="h-3.5 w-3.5 text-violet-600" />
-      Product engineering
-    </span>
-    <span className="absolute left-[2%] top-[20%] rounded-full border border-white bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-violet-700 shadow-sm">
-      <Sparkles className="mr-1 inline h-3 w-3" />
-      AI
-    </span>
-    <span className="absolute right-[0%] top-[22%] rounded-full border border-white bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-blue-700 shadow-sm">
-      <BarChart3 className="mr-1 inline h-3 w-3" />
-      Analytics
-    </span>
-    <span className="absolute bottom-[12%] left-[3%] rounded-full border border-white bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-orange-700 shadow-sm">
-      <Code2 className="mr-1 inline h-3 w-3" />
-      UI / UX
-    </span>
-    <span className="absolute bottom-[12%] right-[-3%] rounded-full border border-white bg-white/90 px-2.5 py-1 text-[10px] font-semibold text-emerald-700 shadow-sm">
-      <Boxes className="mr-1 inline h-3 w-3" />
-      Systems
-    </span>
-  </div>
-);
+/* ─── Handwritten doodle annotations around popups ─────────────────── */
+const annotations = [
+  {
+    text: "Turning data\ninto decisions",
+    cls: "top-[7%] left-[32%]",
+    rotate: "-rotate-[6deg]",
+    arrow: "M 4 8 C 18 16, 36 20, 54 14",
+    dotX: 54,
+    dotY: 14,
+  },
+  {
+    text: "Smarter workflows\nwith AI",
+    cls: "top-[43%] left-[8%]",
+    rotate: "rotate-[4deg]",
+    arrow: "M 4 4 C 18 14, 36 24, 56 34",
+    dotX: 56,
+    dotY: 34,
+  },
+  {
+    text: "Real-time visibility\nat scale",
+    cls: "top-[13%] right-[5%]",
+    rotate: "rotate-[5deg]",
+    arrow: "M 56 6 C 40 16, 24 22, 6 28",
+    dotX: 6,
+    dotY: 28,
+  },
+  {
+    text: "Secure & compliant\nby design",
+    cls: "top-[48%] right-[2%]",
+    rotate: "-rotate-[4deg]",
+    arrow: "M 56 8 C 40 18, 24 26, 8 34",
+    dotX: 8,
+    dotY: 34,
+  },
+  {
+    text: "Complex data\nin simple views",
+    cls: "top-[73%] left-[6%]",
+    rotate: "-rotate-[5deg]",
+    arrow: "M 4 8 C 22 18, 38 28, 56 38",
+    dotX: 56,
+    dotY: 38,
+  },
+  {
+    text: "Connecting developers,\nideas and impact",
+    cls: "top-[76%] right-[6%]",
+    rotate: "rotate-[4deg]",
+    arrow: "M 56 8 C 40 18, 24 26, 6 34",
+    dotX: 6,
+    dotY: 34,
+  },
+];
 
+const floatAnim = (delay = 0) => ({
+  animate: { y: [0, -4, 0] },
+  transition: { duration: 4.5, repeat: Infinity, ease: "easeInOut" as const, delay },
+});
+
+/* ─── Projects Component ───────────────────────────────────────────── */
 const Projects = () => {
   const reducedMotion = useReducedMotion();
 
   return (
     <section
       id="projects"
-      className="relative overflow-hidden bg-[#fff6e8] px-6 py-20 sm:py-24 lg:py-28"
+      className="relative overflow-hidden bg-[#fff8f0] px-3 py-12 sm:px-6 lg:py-16"
     >
+      {/* Ambient background glows */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_52%_46%,rgba(196,181,253,0.25),transparent_38%),radial-gradient(ellipse_at_4%_92%,rgba(255,197,116,0.32),transparent_35%),radial-gradient(ellipse_at_96%_12%,rgba(255,211,153,0.36),transparent_32%)]"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            "radial-gradient(ellipse 60% 55% at 50% 52%, rgba(196,181,253,0.18) 0%, transparent 65%)," +
+            "radial-gradient(ellipse 45% 40% at 8% 88%,  rgba(255,200,120,0.25) 0%, transparent 60%)," +
+            "radial-gradient(ellipse 40% 35% at 94% 12%, rgba(255,214,165,0.30) 0%, transparent 55%)",
+        }}
       />
 
-      <div className="container relative z-10 mx-auto max-w-7xl">
-        <div className="grid items-end gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          <SectionReveal>
-            <p className="mb-4 font-mono text-sm uppercase tracking-[0.18em] text-blue-600">
-              <span aria-hidden="true">// </span>Projects
-            </p>
-            <h2 className="text-balance text-4xl font-extrabold leading-[1.04] tracking-[-0.045em] text-slate-900 sm:text-5xl lg:text-6xl">
-              Products I&apos;ve{" "}
-              <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent">
-                engineered.
-              </span>
-            </h2>
-          </SectionReveal>
-
-          <SectionReveal delay={0.1} className="flex flex-col items-start gap-5 sm:flex-row sm:items-end sm:justify-between">
-            <p className="max-w-xl text-base leading-relaxed text-slate-600 sm:text-lg">
-              A collection of real-world products and modules — turning complex
-              data into intuitive experiences, connected workflows, and
-              actionable insights.
-            </p>
-            <a
-              href="#contact"
-              className="inline-flex flex-shrink-0 items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-blue-900/15 transition-transform hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-600 focus-visible:ring-offset-2"
-            >
-              Discuss a project
-              <ArrowRight className="h-4 w-4" />
-            </a>
-          </SectionReveal>
-        </div>
-
-        <div className="relative mt-10 lg:mt-12">
-          <svg
-            aria-hidden="true"
-            viewBox="0 0 1200 900"
-            preserveAspectRatio="none"
-            className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible lg:block"
+      <div className="container relative z-10 mx-auto max-w-[1560px]">
+        {/* Mind-map canvas */}
+        <div className="relative w-full overflow-x-auto pb-4" style={{ scrollbarWidth: "none" }}>
+          <div
+            className="relative select-none"
+            style={{ aspectRatio: "16 / 9.2", minWidth: "1180px", width: "100%" }}
           >
-            <defs>
-              <linearGradient id="project-connector" x1="0" x2="1" y1="0" y2="1">
-                <stop offset="0%" stopColor="#60a5fa" stopOpacity=".22" />
-                <stop offset="50%" stopColor="#8b5cf6" stopOpacity=".68" />
-                <stop offset="100%" stopColor="#f472b6" stopOpacity=".25" />
-              </linearGradient>
-            </defs>
-            {connectorPaths.map((path) => (
-              <path
-                key={path}
-                d={path}
-                fill="none"
-                stroke="url(#project-connector)"
-                strokeWidth="3"
-                strokeDasharray="3 10"
-                strokeLinecap="round"
-              />
-            ))}
-            <circle cx="600" cy="450" r="6" fill="#8b5cf6" />
-            <circle cx="200" cy="150" r="4" fill="#60a5fa" />
-            <circle cx="1000" cy="150" r="4" fill="#f472b6" />
-            <circle cx="200" cy="750" r="4" fill="#60a5fa" />
-            <circle cx="1000" cy="750" r="4" fill="#f472b6" />
-          </svg>
+            {/* ── Top-Left Header ────────────────────────────────────── */}
+            <div className="absolute left-[2.5%] top-[2.5%] z-30 max-w-[320px]">
+              <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.22em] text-blue-600">
+                <span aria-hidden="true">// </span>PROJECTS
+              </p>
+              <h2 className="text-[clamp(1.9rem,3vw,3.2rem)] font-extrabold leading-[1.06] tracking-[-0.04em] text-slate-900">
+                Products I&apos;ve{" "}
+                <span className="bg-gradient-to-r from-blue-600 via-indigo-500 to-violet-600 bg-clip-text text-transparent">
+                  engineered.
+                </span>
+              </h2>
+              <p className="mt-2.5 text-[12.5px] leading-relaxed text-slate-600">
+                A collection of real-world products and modules I&apos;ve built — turning
+                complex data into intuitive experiences.
+              </p>
+              <a
+                href="#contact"
+                className="mt-4 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-violet-600 px-4 py-2 text-[12px] font-semibold text-white shadow-md shadow-blue-900/15 transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-blue-900/25"
+              >
+                <span className="text-sm leading-none">✦</span>
+                View all projects
+                <ArrowRight className="h-3.5 w-3.5" />
+              </a>
+            </div>
 
-          <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-[repeat(3,minmax(260px,auto))] lg:gap-5">
-            {projects.map((project, index) => {
-              const colors = toneStyles[project.tone as keyof typeof toneStyles];
-
-              return (
-                <motion.article
-                  key={project.title}
-                  initial={reducedMotion ? false : { opacity: 0, y: 18 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, amount: 0.15 }}
-                  transition={{
-                    duration: 0.45,
-                    delay: reducedMotion ? 0 : (index % 3) * 0.07,
-                    ease: [0.22, 1, 0.36, 1],
+            {/* ── Center 3D Hub Model with Tentacles ─────────────────── */}
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute z-10"
+              style={{
+                left: "52%",
+                top: "54%",
+                width: "clamp(560px, 68%, 940px)",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <motion.div {...(reducedMotion ? {} : floatAnim(0))}>
+                <img
+                  src={hubImage}
+                  alt=""
+                  className="h-auto w-full object-contain"
+                  style={{
+                    filter:
+                      "drop-shadow(0 16px 48px rgba(139,92,246,0.30)) drop-shadow(0 4px 20px rgba(217,70,239,0.20))",
                   }}
-                  whileHover={reducedMotion ? undefined : { y: -5 }}
-                  className={`group relative z-10 flex h-full min-h-[225px] flex-col rounded-2xl border bg-white/90 p-5 shadow-[0_14px_36px_rgba(92,61,32,0.08)] backdrop-blur-sm transition-shadow duration-300 hover:shadow-[0_20px_48px_rgba(92,61,32,0.14)] sm:p-6 lg:min-h-[260px] ${colors.border} ${projectGridPositions[index]}`}
-                >
-                  <div className="mb-4 flex items-start justify-between gap-3">
-                    <div className="flex min-w-0 items-center gap-3">
-                      <span className={`flex h-11 w-11 flex-shrink-0 items-center justify-center rounded-2xl ${colors.icon}`}>
-                        <project.icon className="h-5 w-5" />
-                      </span>
-                      <h3 className="text-sm font-bold leading-snug text-slate-900 sm:text-base">
-                        {project.title}
-                      </h3>
-                    </div>
-                    <span className={`flex-shrink-0 rounded-full px-2.5 py-1 text-[10px] font-semibold ${colors.badge}`}>
-                      {project.category}
-                    </span>
-                  </div>
+                  loading="eager"
+                  decoding="async"
+                />
+              </motion.div>
+            </div>
 
-                  <p className="flex-1 text-xs leading-relaxed text-slate-600 sm:text-sm">
+            {/* ── Center Connection Particles (AI, Analytics, etc.) ─── */}
+            {connectionParticles.map((particle) => (
+              <div
+                key={particle.label}
+                aria-hidden="true"
+                className="pointer-events-none absolute z-25 -translate-x-1/2 -translate-y-1/2"
+                style={{ left: particle.x, top: particle.y }}
+              >
+                <div
+                  className={`inline-flex items-center gap-1.5 rounded-full bg-white px-2.5 py-1 shadow-md ${particle.shadow} border border-slate-100/90 transition-all duration-200`}
+                >
+                  <span
+                    className={`flex h-4 w-4 items-center justify-center rounded-full text-[10px] text-white shadow-xs ${particle.circleBg}`}
+                  >
+                    <particle.icon className="h-2.5 w-2.5" />
+                  </span>
+                  <span className="text-[11px] font-bold tracking-tight text-slate-800">
+                    {particle.label}
+                  </span>
+                </div>
+              </div>
+            ))}
+
+            {/* ── Project Popup Cards (touching tentacle ends) ──────── */}
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.id}
+                {...(reducedMotion ? {} : floatAnim(0.3 + index * 0.18))}
+                className={`absolute z-20 ${cardPositions[index]}`}
+              >
+                <article className="group rounded-2xl border border-slate-100 bg-white p-3.5 shadow-[0_8px_30px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_40px_rgba(15,23,42,0.14)]">
+                  <div className="mb-1.5 flex items-center gap-2.5">
+                    <span
+                      className={`flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl text-white shadow-sm ${project.iconBg}`}
+                    >
+                      <project.icon className="h-4 w-4" />
+                    </span>
+                    <h3 className="text-[12px] font-bold leading-tight text-slate-900">
+                      {project.title}
+                    </h3>
+                  </div>
+                  <p className="text-[10.5px] leading-relaxed text-slate-500">
                     {project.summary}
                   </p>
+                </article>
+              </motion.div>
+            ))}
 
-                  <div className="mt-4 flex items-center gap-2 text-[11px] font-semibold text-slate-700">
-                    <ArrowDownRight className={`h-4 w-4 ${colors.badge.split(" ")[1]}`} />
-                    {project.impact}
-                  </div>
-
-                  <div className="mt-4 flex flex-wrap gap-1.5 border-t border-slate-100 pt-3">
-                    {project.tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${colors.tag}`}
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </motion.article>
-              );
-            })}
-
-            <ProjectHub />
+            {/* ── Handwritten Doodle Annotations around Popups ──────── */}
+            {annotations.map((ann, i) => (
+              <div
+                key={i}
+                aria-hidden="true"
+                className={`pointer-events-none absolute z-30 select-none ${ann.cls}`}
+              >
+                <div className={ann.rotate}>
+                  <p className="font-handwriting text-[12px] font-bold leading-tight text-slate-700 whitespace-pre-line">
+                    {ann.text}
+                  </p>
+                  <svg
+                    width="62"
+                    height="42"
+                    viewBox="0 0 62 42"
+                    fill="none"
+                    className="mt-0.5 text-slate-600"
+                  >
+                    <path
+                      d={ann.arrow}
+                      stroke="currentColor"
+                      strokeWidth="1.3"
+                      strokeLinecap="round"
+                    />
+                    <circle cx={ann.dotX} cy={ann.dotY} r="2.2" fill="currentColor" opacity="0.6" />
+                  </svg>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
